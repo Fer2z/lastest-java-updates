@@ -14,7 +14,9 @@ public abstract class Piece {
          this.piecePosition = piecePosition;
          
      }
-     
+     public int getPiecePosition(){
+     return this.piecePosition;
+     }
      public Alliance getPieceAlliance(){
      
      return this.pieceAlliance;
