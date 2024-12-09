@@ -64,6 +64,11 @@ public class Knight extends Piece { //(constructor) الخاص بالفارس.
      return ImmutableList.copyOf(legalMoves);
     }
 
+    @Override
+        public String toString() {
+        return PieceType.KNIGHT.toString();
+}
+    
         private static boolean isValidTileCoordinate(int coordinate) {
                return coordinate >= 0 && coordinate < 64;
            }
