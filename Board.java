@@ -14,57 +14,62 @@ import java.util.Map;
 
 public class Board {
     
-    private final List<Tile>gameBoard;
-    private final Collection<Piece> whitePieces;
-     private final Collection<Piece> blackPieces;
+    private final List<Tile>gameBoard; // مربعات الشطرنج
+    private final Collection<Piece> whitePieces; // مجموعة القطع البيضاء النشطة على الطاوله
+     private final Collection<Piece> blackPieces; // مجموعة القطع السوداء النشطة على الطاوله
     
+     
+     
+     //يقوم ببناء الطاوله وحساب القطع النشطة لكل لاعب والحركات القانونية المتاحة
     private Board(Builder builder){
-        this.gameBoard = createGameBoard (builder);
+        this.gameBoard = createGameBoard (builder); //لإنشاء الطاوله باستخدام إعدادات القطع
       
-        this.whitePieces= calculateActivePieces(this.gameBoard,Alliance.WHITE);
+        //  لحساب القطع النشطة الموجودة حاليا على المربعات
+        this.whitePieces= calculateActivePieces(this.gameBoard,Alliance.WHITE); 
         this.blackPieces= calculateActivePieces(this.gameBoard,Alliance.BLACK);  
         
+        //لحساب الحركات الشرعية لكل لاعب
         final Collection<Move>whiteStandardLegalMoves = calculateLegalMoves(this.whitePieces);
         final Collection<Move>blaclStandardLegalMoves = calculateLegalMoves(this.blackPieces);
 
     }
     @Override
+ 
+    // تحويل رقعة الشطرنج إلى نص منسق بحيث يتم عرض كل مربع  بشكل مناسب في صفوف وأعمدة
+    //يتم طباعة كل مربع مع فحص حدود كل صف
     public String toString(){
     final StringBuilder builder= new StringBuilder();
     for (int i=0;i<BoardUtils.NUM_TILES; i++){
      final String tileText = this.gameBoard.get(i).toString();
       builder.append(String.format("%3s", tileText));
         if ((i + 1) % BoardUtils.NUM_TILES_PER_ROW == 0) {
-            builder.append("\n");
-            
+            builder.append("\n");    
     }
     }
         return builder.toString();
-
     }
     
        private static String prettyPrint(Tile tile) {
     if (tile.isTileOccupied()) {
         return tile.getPiece().getPieceAlliance().isBlack() ? tile.toString().toLowerCase() : tile.toString();
-    }
+    }     
     return tile.toString();
-}
+    }
     
-    
+     //حساب جميع الحركات المسموحه لكل القطع المعطاة كمدخل
+    //يتم استدعاء الدالة من كل قطعة لإرجاع الحركات الممكنة 
     private Collection <Move> calculateLegalMoves(final Collection <Piece> Pieces){
         final List<Move> legalMoves= new ArrayList<>();
-        
-        for(final Piece piece: Pieces){
-        
+         for(final Piece piece: Pieces){
            legalMoves.addAll(piece.calculateLegalMoves(this));
-            
         }
-    return ImmutableList.copyOf(legalMoves);
+    return ImmutableList.copyOf(legalMoves);//لجعل القائمة غير قابلة للتعديل بعد إنشائها
     }
     
     
+    //حساب جميع القطع النشطة على الرقعة بناء على تحالفها أبيض أو أسود
+    //تمر على كل مربع وتتحقق إذا كان مشغولا وتضيف القطعة إذا كانت تتبع التحالف المطلوب
     private static Collection<Piece>calculateActivePieces(final list<Tile>gameBoard,final Alliance alliance){
-    
     final List<Piece> activePieces = new ArrayList<>();
     for (final Tile tile : gameBoard) {
         if (tile.isTileOccupied()) {
@@ -82,6 +87,9 @@ public class Board {
     public Tile getTile(final int tileCoordinate) {
      return gameBoard.get(tileCoordinate);
     }
+    
+    //بناء طاوله الشطرنج من خلال مربعاتها الاربع وستين باستخدام الكلاس تايل
+    //تمر على كل موقع من صفر إلى  ثلاث وستين وتنشئ مربع جديد إما فارغ أو يحتوي على قطعة حسب الإعداد المقدم من الكلاس بيلدر
     private static List<Tile>createGameBoard(final Builder builder){
     final Tile[]tiles = new Tile [BoardUtils.NUM_TILES];
     for (int i = 0; i<BoardUtils.NUM_TILES;i++){
@@ -90,10 +98,11 @@ public class Board {
    return ImmutableList.copyOf(tiles);
     }
     
+    //يتم وضع القطع السوداء والبيضاء في مواقعها التقليدية ثم تحديد أن اللاعب الأبيض يبدأ الحركة
     public static Board createStandardBoard(){
     
         final Builder builder = new Builder();
-        // Black Layout
+        //  تخطيط الاسود
         builder.setPiece(new Rook(Alliance.BLACK, 0));
         builder.setPiece(new Knight(Alliance.BLACK, 1));
         builder.setPiece(new Bishop(Alliance.BLACK, 2));
@@ -110,7 +119,7 @@ public class Board {
         builder.setPiece(new Pawn(Alliance.BLACK, 13));
         builder.setPiece(new Pawn(Alliance.BLACK, 14));
         builder.setPiece(new Pawn(Alliance.BLACK, 15));
-        // White Layout
+        // تخطيط الابيض
         builder.setPiece(new Pawn(Alliance.WHITE, 48));
         builder.setPiece(new Pawn(Alliance.WHITE, 49));
         builder.setPiece(new Pawn(Alliance.WHITE, 50));
@@ -127,9 +136,9 @@ public class Board {
         builder.setPiece(new Bishop(Alliance.WHITE, 61));
         builder.setPiece(new Knight(Alliance.WHITE, 62));
         builder.setPiece(new Rook(Alliance.WHITE, 63));
-        //white to move
+        //الابيض يمشي
         builder.setMoveMaker(Alliance.WHITE);
-        //build the board
+        //بناء اللوحه او الطاوله
         return builder.build();
     }
 
@@ -144,13 +153,14 @@ public class Board {
         this.boardConfig= new HashMap<>();
         }
         
+        //يضيف قطعة إلى الموقع الخاص بها على اللوحه
         public Builder setPiece(final Piece piece){
         
         this.boardConfig.put(piece.getPiecePosition(), piece);
         return this;
         }
         
-        
+        //يبني كائن لوحه باستخدام المعلومات المخزنة
     public Board build(){
      return new Board(this);
      }
