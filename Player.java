@@ -26,11 +26,12 @@ public abstract class Player {
  private King establishKing(){
     for(final Piece piece : getActivePieces()){
      
-        if(piece.getPiecetype().isKing()){
-         return (king) piece;
+        if(piece.getPieceType().isKing()){
+         return (King) piece;
        
         }
     }
+    throw new RuntimeException("Should not reach here! Not a valid board!!"); 
  }
  
  public abstract Collection<Piece> getActivePieces();
