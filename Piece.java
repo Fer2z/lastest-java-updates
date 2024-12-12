@@ -56,7 +56,7 @@ public abstract class Piece {
     PAWN("P") {
         @Override
         public boolean isKing() {
-            throw new 
+            return false;
         }
     },
     KNIGHT("N") {
