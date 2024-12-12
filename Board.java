@@ -3,6 +3,8 @@ package com.chess.engine.board;
 import com.chess.engine.Alliance;
 import com.chess.engine.pieces.Knight;
 import com.chess.engine.pieces.Piece;
+import com.chess.engine.player.BlackPlayer;
+import com.chess.engine.player.WhitePlayer;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +21,9 @@ public class Board {
      private final Collection<Piece> blackPieces; // مجموعة القطع السوداء النشطة على الطاوله
     
      
+     private final WhitePlayer whitePlayer;
+     private final BlackPlayer blackPlayer;
+     
      
      //يقوم ببناء الطاوله وحساب القطع النشطة لكل لاعب والحركات القانونية المتاحة
     private Board(Builder builder){
@@ -30,8 +35,9 @@ public class Board {
         
         //لحساب الحركات الشرعية لكل لاعب
         final Collection<Move>whiteStandardLegalMoves = calculateLegalMoves(this.whitePieces);
-        final Collection<Move>blaclStandardLegalMoves = calculateLegalMoves(this.blackPieces);
-
+        final Collection<Move>blackStandardLegalMoves = calculateLegalMoves(this.blackPieces);
+        this.whitePlayer = new WhitePlayer(this ,whiteStandardLegalMoves, blackStandardLegalMoves);
+        this.blackPlayer = new BlackPlayer(this ,whiteStandardLegalMoves, blackStandardLegalMoves);
     }
     @Override
  
@@ -48,6 +54,14 @@ public class Board {
     }
         return builder.toString();
     }
+    
+    public Collection<Piece> getBlackPieces(){
+    return this.blackPieces;}
+    
+    public Collection<Piece> getWhitePieces(){
+    return this.whitePieces;}
+    
+    
     
        private static String prettyPrint(Tile tile) {
     if (tile.isTileOccupied()) {
