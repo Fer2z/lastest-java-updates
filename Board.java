@@ -24,7 +24,7 @@ public class Board {
      
      private final WhitePlayer whitePlayer;
      private final BlackPlayer blackPlayer;
-     
+     private final Player currectPlayer;
      
      //يقوم ببناء الطاوله وحساب القطع النشطة لكل لاعب والحركات القانونية المتاحة
     private Board(Builder builder){
@@ -39,6 +39,7 @@ public class Board {
         final Collection<Move>blackStandardLegalMoves = calculateLegalMoves(this.blackPieces);
         this.whitePlayer = new WhitePlayer(this ,whiteStandardLegalMoves, blackStandardLegalMoves);
         this.blackPlayer = new BlackPlayer(this ,whiteStandardLegalMoves, blackStandardLegalMoves);
+        this.currectPlayer = null;
     }
     @Override
  
@@ -64,6 +65,10 @@ public class Board {
      return this.blackPlayer;
     }
     
+     public Player currentPlayer(){
+     return this.currectPlayer;
+     }
+     
     public Collection<Piece> getBlackPieces(){
     return this.blackPieces;}
     

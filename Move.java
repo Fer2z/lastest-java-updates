@@ -20,12 +20,22 @@ public abstract class Move {
     final Piece movedPiece,
     final int destinationCoordinate){
 
-this.board=board;
-this.movedPiece=movedPiece;
-this.destinationCoordinate=destinationCoordinate;
+    this.board=board;
+    this.movedPiece=movedPiece;
+    this.destinationCoordinate=destinationCoordinate;
 
 }
 
+   public int getDestinationCoordinate(){
+   return this.destinationCoordinate;
+   }
+   
+  
+    public Board execute() {
+        
+        return null;
+        
+    }
    
    //يمثل حركة عادية غير هجومية للقطعة
     public static final class MajorMove extends Move {
@@ -49,6 +59,12 @@ this.destinationCoordinate=destinationCoordinate;
                           final Piece attackedPiece ) {
             super(board, movedPiece, destinationCoordinate);
             this.attackedPiece= attackedPiece;
+        }
+
+        @Override
+        public Board execute() {
+           
+            return null;
         }
     }
     
