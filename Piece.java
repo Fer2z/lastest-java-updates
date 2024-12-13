@@ -39,7 +39,7 @@ public abstract class Piece {
      //إرجاع تحالف القطعة أبيض أو أسود
      }
      
-     
+     // لتمييز الحركات الأولى لبعض القطع مثل البيدق الذي يمكنه التحرك مربعين للأمام في أول حركة فقط
      public boolean isFirstMove() {
     return this.isFirstMove;
 }
@@ -47,7 +47,7 @@ public abstract class Piece {
              
              
              
-     public abstract Collection<Move> calculatelegalMoves (final Board board);
+     public abstract Collection<Move> calculateLegalMoves (final Board board);
      //دالة مجردة  يجب على أي كلاس يرث من كلاس بيس يحدد الحركات المسموحه
      //ترجع مجموعة من الحركات المسموحه الممكنة للقطعة على الشطرنج
      

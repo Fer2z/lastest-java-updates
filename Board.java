@@ -24,7 +24,7 @@ public class Board {
      
      private final WhitePlayer whitePlayer;
      private final BlackPlayer blackPlayer;
-     private final Player currectPlayer;
+     private final Player currentPlayer;
      
      //يقوم ببناء الطاوله وحساب القطع النشطة لكل لاعب والحركات القانونية المتاحة
     private Board(Builder builder){
@@ -39,7 +39,7 @@ public class Board {
         final Collection<Move>blackStandardLegalMoves = calculateLegalMoves(this.blackPieces);
         this.whitePlayer = new WhitePlayer(this ,whiteStandardLegalMoves, blackStandardLegalMoves);
         this.blackPlayer = new BlackPlayer(this ,whiteStandardLegalMoves, blackStandardLegalMoves);
-        this.currectPlayer = null;
+        this.currentPlayer = null;
     }
     @Override
  
@@ -57,6 +57,9 @@ public class Board {
         return builder.toString();
     }
     
+    
+    
+    //تستخدم للوصول إلى معلومات اللاعبين وتحديد من هو اللاعب صاحب القطع البيضاء أو السوداء
     public Player whitePlayer(){
      return this.whitePlayer;
     }
@@ -64,11 +67,18 @@ public class Board {
      public Player blackPlayer(){
      return this.blackPlayer;
     }
-    
+     
+     
+     
+ //تعيد اللاعب الحالي الذي يجب عليه اللعب سواء الأبيض أو الأسود
      public Player currentPlayer(){
-     return this.currectPlayer;
+     return this.currentPlayer; //تستخدم لتحديد الدور الحالي من اللعبة
      }
      
+     
+     
+     
+     //تستخدم للحصول على القطع الخاصة بكل لاعب ومعالجتها مثلا حساب الحركات المسموحه لكل قطعة
     public Collection<Piece> getBlackPieces(){
     return this.blackPieces;}
     
